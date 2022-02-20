@@ -143,7 +143,7 @@ class Database:
         return (await self.db.command("dbstats"))['dataSize']
 
     async def is_filter_on(chat_id: int) -> bool:
-        chat = db.find_one({"chat_id": chat_id})
+        chat = db.find_one(chat_id)
         if not chat:
             return True
         return False
