@@ -143,7 +143,7 @@ class Database:
         return (await self.db.command("dbstats"))['dataSize']
 
     async def is_filter_on(chat_id: int) -> bool:
-        chat = afdb.find_one({"chat_id": chat_id})
+        chat = db.find_one({"chat_id": chat_id})
         if not chat:
             return True
         return False
@@ -152,15 +152,14 @@ class Database:
         is_filter = is_filter_on(chat_id)
         if is_filter:
             return
-        return afdb.delete_one({"chat_id": chat_id})
+        return db.delete_one({"chat_id": chat_id})
 
 
     async def filter_off(chat_id: int):
         is_filter = is_filter_on(chat_id)
         if not is_filter:
             return
-        return afdb.insert_one({"chat_id": chat_id})
+        return db.insert_one({"chat_id": chat_id})
 
 
 db = Database(DATABASE_URI, DATABASE_NAME)
-afdb = db.af
