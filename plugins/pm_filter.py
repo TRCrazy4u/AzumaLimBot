@@ -14,7 +14,7 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQ
 from pyrogram import Client, filters
 from pyrogram.errors import FloodWait, UserIsBlocked, MessageNotModified, PeerIdInvalid
 from utils import get_size, is_subscribed, get_poster, search_gagala, temp, get_settings, save_group_settings
-from database.users_chats_db import db, is_filter_on, filter_on, filter_off
+from database.users_chats_db import db
 from database.ia_filterdb import Media, get_file_details, get_search_results
 from database.filters_mdb import (
     del_all,
@@ -35,7 +35,7 @@ async def give_filter(client, message):
     k = await manual_filters(client, message)
     if k == False:
         await auto_filter(client, message)
-    if not await is_filter_on(message.chat.id):
+    if not await db.is_filter_on(message.chat.id):
         return
 
 
@@ -841,12 +841,12 @@ async def filter_enable_disable(_, message):
     status = status.lower()
     chat_id = message.chat.id
     if status == "on":
-        filter_on(chat_id)
+        db.filter_on(chat_id)
         await message.reply_text(
             "Enabled Auto filter System. I will Delete Messages Containing Inappropriate Content."
         )
     elif status == "off":
-        filter_off(chat_id)
+        db.filter_off(chat_id)
         await message.reply_text("Disabled Auto filter System.")
     else:
         await message.reply_text(
