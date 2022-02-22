@@ -35,7 +35,7 @@ async def give_filter(client, message):
     k = await manual_filters(client, message)
     if k == False:
         await auto_filter(client, message)
-    if not await db.is_filter_on(message.chat.id):
+    if not await db.is_filter_on(chat_id):
         return
 
 
@@ -850,5 +850,5 @@ async def filter_enable_disable(_, message):
         await message.reply_text("Disabled Auto filter System.")
     else:
         await message.reply_text(
-            "`Use /af on/off`"
+            "`Use /af [on | off]"
         )
